@@ -1,0 +1,78 @@
+<head>
+  <title>Red Valve</title>
+</head>
+
+<body>
+  {{> topNav}}
+  <div class="container">
+    {{> home}}
+  </div>
+</body>
+
+<template name="home">
+  <div class="row">
+    <div id="metrics" class='col-md-8 col-md-offset-2'>
+      <div class="row metrics">
+        {{#each metrics}}
+        <div class='col-md-3 text-center'>
+          <div class="metric bg-yellow">
+            <h3>{{this.neutral}}</h3>
+            <i class="fa fa-meh-o fa-4x"></i>
+            <div class='footer'>Neutral</div></div>
+        </div>
+        <div class='col-md-3 text-center'>
+          <div class="metric bg-green">
+            <h3>{{this.positive}}</h3>
+            <i class="fa fa-smile-o fa-4x"></i>
+            <div class='footer'>Positive</div></div>
+        </div>
+        <div class='col-md-3 text-center '>
+          <div class="metric bg-red">
+            <h3>{{this.negative}}</h3>
+            <i class="fa fa-frown-o fa-4x"></i>
+            <div class='footer'>Negative</div>
+          </div>
+        </div>
+        <div class='col-md-3 text-center'>
+          <div class="metric bg-blue">
+            <h3>{{this.total}}</h3>
+            <i class="fa fa-reddit-alien fa-4x"></i>
+            <div class='footer'>Total</div>
+          </div>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <h2 class='col-md-8 col-md-offset-2'>Posts from /r/valve</h2>
+    <div id="redditPosts">
+      {{#each posts}}
+      <div class='col-md-8 col-md-offset-2 post' data-id={{this._id}}>
+        <h3>Sentiment: {{this.sentiment}}</h3>
+        <p>
+          {{this.original_text}}
+        </p>
+        <p><a target='_blank' href='https://www.reddit.com{{this.permalink}}'>View comment on Reddit</a></p>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</template>
+
+<template name='topNav'>
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#"><i class="fa fa-reddit-alien fa-1x"></i> Red Valve</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a id='checkForPosts' class="btn btn-link" href="#a" role="button">Check for new posts</a></li>
+          <li><a id='checkSentiment' class="btn btn-link" href="#b" role="button">Check sentiment</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</template>

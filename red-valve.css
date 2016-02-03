@@ -1,0 +1,76 @@
+/* CSS declarations go here */
+body
+{
+  background-color: #f8f8f8;
+}
+
+.post
+{
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: white;
+  overflow:hidden;
+}
+
+#redditPosts, #metrics
+{
+  margin-top: 80px;
+}
+
+.metrics
+{
+  margin-bottom: 50px;
+}
+
+.metric
+{
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  border-radius: 2px;
+  background-color: white;
+}
+
+.metric h3
+{
+  font-size: 3em;
+  padding-top: 10px;
+}
+
+.bg-yellow
+{
+  background-color: #f39c12;
+  color:white;
+}
+
+.bg-green
+{
+  background-color: #00a65a;
+  color:white;
+}
+
+.bg-red
+{
+  background-color: #dd4b39;
+  color:white;
+}
+
+.bg-blue
+{
+  background-color: #00c0ef;
+  color:white;
+}
+
+.metric .fa {
+  opacity: .5;
+  margin-bottom: 10px;
+}
+
+.metric .footer
+{
+  font-weight: 200;
+  color: rgba(255,255,255,0.8);
+      background: rgba(0,0,0,0.1);
+      padding: 3px 0;
+      font-size: 14px;
+}
