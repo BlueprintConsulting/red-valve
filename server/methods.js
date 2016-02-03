@@ -28,7 +28,7 @@ Meteor.methods({
         }
     });
 
-    ValveMetrics.update({
+    ValveMetrics.upsert({
       _id: "main",
     }, {
       $set: {
@@ -56,7 +56,7 @@ Meteor.methods({
     var sentimentValue = 0;
     var count = 0;
     var posts = ValvePosts.find({},{sort:{submitted: -1}}).forEach(function(obj){
-      if(obj.sentiment === "" || obj.sentiment === 'undefined' || obj.sentiment === null)
+      if(obj.sentiment === "" || obj.sentiment === undefined || obj.sentiment === null)
       {
           count++;
         if(count<5)
@@ -125,6 +125,7 @@ Meteor.methods({
         Meteor.call("getPosts", nextID);
       }
       else {
+        Meteor.call('getSentiment');
         console.log('all posts have been grabbed');
       }
     });
