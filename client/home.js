@@ -6,8 +6,19 @@ Template.topNav.events({
   'click #checkForPosts': function () {
     Meteor.call("getPosts");
   },
+
   'click #checkSentiment': function () {
     Meteor.call("getSentiment");
+  },
+
+  'click #downloadCSV':function(){
+    var nameFile = 'redValve-valve-posts.csv';
+    Meteor.call('downloadCSV', function(err, fileContent) {
+    if(fileContent){
+      var blob = new Blob([fileContent], {type: "text/plain;charset=utf-8"});
+      saveAs(blob, nameFile);
+    }
+    });
   }
 });
 

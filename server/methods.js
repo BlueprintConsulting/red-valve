@@ -129,5 +129,15 @@ Meteor.methods({
         console.log('all posts have been grabbed');
       }
     });
+  },
+
+  downloadCSV:function(){
+    var collection = ValvePosts.find({},{fields: {original_text:0, updated:0, }}).fetch();
+    var heading = true; // Optional, defaults to true
+    var delimiter = ","; // Optional, defaults to ",";
+    return exportcsv.exportToCSV(collection);
   }
+
+
+
 }); //end methods

@@ -22,3 +22,4 @@ twbs:bootstrap
 momentjs:moment
 http
 fortawesome:fontawesome
+lfergon:exportcsv
