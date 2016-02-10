@@ -28,6 +28,9 @@ Meteor.methods({
         }
     });
 
+    var byMonth = Meteor.call('getByMonth');
+
+
     ValveMetrics.upsert({
       _id: "main",
     }, {
@@ -38,6 +41,7 @@ Meteor.methods({
         negative: negative,
         total: ungraded + positive + neutral + negative,
         score: score,
+        byMonth: byMonth,
         updated: moment().format('MMM Do YYYY, h:mm a')
       }
     });
@@ -136,6 +140,53 @@ Meteor.methods({
     var heading = true; // Optional, defaults to true
     var delimiter = ","; // Optional, defaults to ",";
     return exportcsv.exportToCSV(collection);
+  },
+
+  getByMonth:function(){
+    var monthArr = [];
+
+    ValvePosts.find({},{sort:{submitted: -1}}).forEach(function(obj){
+      var date = moment.unix(obj.submitted).format("MMM YYYY");
+      var sentiment = obj.sentiment;
+        for(var i=0;i<monthArr.length;i++)
+        {
+          if(monthArr[i].date == date)
+          {
+            if(sentiment === 'positive')
+            {
+              monthArr[i].positive++;
+            }
+            else if(sentiment === 'negative')
+            {
+              monthArr[i].negative++;
+            }else if(sentiment === 'neutral')
+            {
+              monthArr[i].neutral++;
+            }
+            else {
+              monthArr[i].ungraded++;
+            }
+            //monthArr[i].count++;
+            return;
+          }
+        }
+        //monthArr.push({"date": date, "count": 1, "sentiment": obj.sentiment});
+        if(sentiment === 'positive')
+        {
+          monthArr.push({"date": date, "positive": 1, "negative": 0, "neutral": 0, "ungraded": 0});
+        }
+        else if(sentiment === 'negative')
+        {
+          monthArr.push({"date": date, "positive": 0, "negative": 1, "neutral": 0, "ungraded": 0});
+        }else if(sentiment === 'neutral')
+        {
+          monthArr.push({"date": date, "positive": 0, "negative": 0, "neutral": 1, "ungraded": 0});
+        }
+        else {
+          monthArr.push({"date": date, "positive": 0, "negative": 0, "neutral": 0, "ungraded": 1});
+        }
+    });
+    return monthArr;
   }
 
 
