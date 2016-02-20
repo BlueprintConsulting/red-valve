@@ -89,7 +89,7 @@ Template.home.getMetrics = function(){
 
 Template.home.helpers({
   posts:function(){
-    return ValvePosts.find({},{sort:{submitted: -1}});
+    return ValvePosts.find({},{sort:{submitted: +1}});
   },
   metrics:function(){
     return ValveMetrics.find({});
