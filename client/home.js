@@ -103,16 +103,24 @@ Template.home.events({
   'click #neutralCount': function () {
     $(".negative, .positive, .neutral").show();
     $(".negative, .positive").toggle();
+    $('#postsType').html('NEUTRAL');
   },
   'click #positiveCount': function () {
     $(".negative, .positive, .neutral").show();
     $(".negative, .neutral").toggle();
+    $('#postsType').html('POSITIVE');
   },
   'click #negativeCount': function () {
     $(".negative, .positive, .neutral").show();
     $(".positive, .neutral").toggle();
+    $('#postsType').html('NEGATIVE');
   },
   'click #allCount':function(){
     $(".negative, .positive, .neutral").show();
+    $('#postsType').html('ALL');
   }
+});
+
+Template.registerHelper('formatDate', function(date) {
+  return moment.unix(date).format("dddd, MMMM Do YYYY, h:mm:ss a");
 });

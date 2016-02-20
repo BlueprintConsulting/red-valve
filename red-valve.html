@@ -41,7 +41,7 @@
           <div id='allCount' class="metric bg-blue">
             <h3>{{this.total}}</h3>
             <i class="fa fa-reddit-alien fa-4x"></i>
-            <div class='footer'>Total</div>
+            <div class='footer'>All</div>
           </div>
         </div>
         {{/each}}
@@ -50,11 +50,12 @@
   </div>
 
   <div class="row">
-    <h2 class='col-md-8 col-md-offset-2'>Posts from /r/valve</h2>
+    <h2 class='col-md-8 col-md-offset-2'>Showing <span id='postsType'>ALL</span> posts from <a href='reddit.com/r/valve'>/r/valve</a></h2>
     <div id="redditPosts">
       {{#each posts}}
       <div class='col-md-8 col-md-offset-2 post {{this.sentiment}}' data-id={{this._id}}>
         <h3>Sentiment: {{this.sentiment}}</h3>
+        <small class='date'>{{formatDate submitted}}</small>
         <p>
           {{this.original_text}}
         </p>

@@ -4,6 +4,12 @@ body
   background-color: #f8f8f8;
 }
 
+.post .date
+{
+  font-weight: bold;
+  color: #999;
+}
+
 .post
 {
   border-radius: 2px;
