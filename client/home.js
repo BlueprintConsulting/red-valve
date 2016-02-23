@@ -1,5 +1,5 @@
 Template.home.rendered = function() {
-  Template.home.getMetrics();
+  Template.home.getMetrics(true, true, true);
 };
 
 Template.topNav.events({
@@ -26,65 +26,86 @@ Template.topNav.events({
   }
 });
 
-Template.home.getMetrics = function(){
+Template.home.getMetrics = function(displayPos, displayNeg, displayNeu){
   var labelsArr = [];
   var positiveArr = [];
   var negativeArr = [];
   var neutralArr = [];
-  var myData;
+  var datasets = [];
+  var myData, positiveDataSet, negativeDataSet, neutralDataSet;
   var chartData = Meteor.call("getByMonth", function(err, monthlyData){
     $.each(monthlyData, function(i,obj){
       labelsArr.push(obj.date);
       positiveArr.push(obj.positive);
       negativeArr.push(obj.negative);
       neutralArr.push(obj.neutral);
-
     });
+
+
+    positiveDataSet = {
+        label: "Positive",
+        fillColor: "rgba(0, 166, 90, .0)",
+        strokeColor: "rgba(0, 166, 90, 1)",
+        pointColor: "rgba(0, 166, 90, 1)",
+        pointStrokeColor: "#fff",
+        pointHighlightFill: "#fff",
+        pointHighlightStroke: "rgba(220,220,220,1)",
+        data: positiveArr
+    };
+
+    negativeDataSet = {
+        label: "Negative",
+        fillColor: "rgba(221, 75, 57, .0)",
+        strokeColor: "rgba(221, 75, 57, 1)",
+        pointColor: "rgba(221, 75, 57, 1)",
+        pointStrokeColor: "#fff",
+        pointHighlightFill: "#fff",
+        pointHighlightStroke: "rgba(151,187,205,1)",
+        data: negativeArr
+    };
+
+    neutralDataSet = {
+        label: "Neutral",
+        fillColor: "rgba(243, 156, 18, .0)",
+        strokeColor: "rgba(243, 156, 18, 1)",
+        pointColor: "rgba(243, 156, 18, 1)",
+        pointStrokeColor: "#fff",
+        pointHighlightFill: "#fff",
+        pointHighlightStroke: "rgba(151,187,205,1)",
+        data: neutralArr
+    };
+
+    if(displayPos)
+    {
+      datasets.push(positiveDataSet);
+    }
+
+    if(displayNeg){
+      datasets.push(negativeDataSet);
+    }
+    if(displayNeu){
+      datasets.push(neutralDataSet);
+    }
 
     myData = {
       labels: labelsArr,
-      datasets: [
-          {
-              label: "Positive",
-              fillColor: "rgba(0, 166, 90, .0)",
-              strokeColor: "rgba(0, 166, 90, 1)",
-              pointColor: "rgba(0, 166, 90, 1)",
-              pointStrokeColor: "#fff",
-              pointHighlightFill: "#fff",
-              pointHighlightStroke: "rgba(220,220,220,1)",
-              data: positiveArr
-          },
-          {
-              label: "Negative",
-              fillColor: "rgba(221, 75, 57, .0)",
-              strokeColor: "rgba(221, 75, 57, 1)",
-              pointColor: "rgba(221, 75, 57, 1)",
-              pointStrokeColor: "#fff",
-              pointHighlightFill: "#fff",
-              pointHighlightStroke: "rgba(151,187,205,1)",
-              data: negativeArr
-          },
-          {
-              label: "Neutral",
-              fillColor: "rgba(243, 156, 18, .0)",
-              strokeColor: "rgba(243, 156, 18, 1)",
-              pointColor: "rgba(243, 156, 18, 1)",
-              pointStrokeColor: "#fff",
-              pointHighlightFill: "#fff",
-              pointHighlightStroke: "rgba(151,187,205,1)",
-              data: neutralArr
-          }
-      ]
-  };
-  var ctx = document.getElementById("monthlyChart").getContext("2d");
-  var lineChart = new Chart(ctx).Line(myData);
+      datasets: datasets
+    };
+
+    Template.home.drawChart(myData);
 
   });
 
-
-
-
   return Meteor.call('getMetrics');
+};
+
+Template.home.drawChart = function(myData){
+      var ctx = document.getElementById("monthlyChart").getContext("2d");
+      if(window.lineChart)
+      {
+        window.lineChart.destroy();
+      }
+      var lineChart = new Chart(ctx).Line(myData);
 };
 
 Template.home.helpers({
@@ -92,7 +113,7 @@ Template.home.helpers({
     return ValvePosts.find({},{sort:{submitted: +1}});
   },
   metrics:function(){
-    return ValveMetrics.find({});
+    return ValveMetrics.find({},{sort:{submitted: +1}});
   },
   showNeutral:function(){
     Session.get('showNeutralSession');
@@ -101,21 +122,25 @@ Template.home.helpers({
 
 Template.home.events({
   'click #neutralCount': function () {
+    Template.home.getMetrics(false, false, true);
     $(".negative, .positive, .neutral").show();
     $(".negative, .positive").toggle();
     $('#postsType').html('NEUTRAL');
   },
   'click #positiveCount': function () {
+    Template.home.getMetrics(true, false, false);
     $(".negative, .positive, .neutral").show();
     $(".negative, .neutral").toggle();
     $('#postsType').html('POSITIVE');
   },
   'click #negativeCount': function () {
+    Template.home.getMetrics(false, true, false);
     $(".negative, .positive, .neutral").show();
     $(".positive, .neutral").toggle();
     $('#postsType').html('NEGATIVE');
   },
   'click #allCount':function(){
+    Template.home.getMetrics(true, true, true);
     $(".negative, .positive, .neutral").show();
     $('#postsType').html('ALL');
   }

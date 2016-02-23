@@ -63,7 +63,7 @@ Meteor.methods({
       if(obj.sentiment === "" || obj.sentiment === undefined || obj.sentiment === null)
       {
           count++;
-        if(count<5)
+        if(count<4)
         {
           HTTP.post("https://api.monkeylearn.com/v2/classifiers/cl_mcHq5Mxu/classify/?sandbox=1",
           {
@@ -145,7 +145,7 @@ Meteor.methods({
   getByMonth:function(){
     var monthArr = [];
 
-    ValvePosts.find({},{sort:{submitted: -1}}).forEach(function(obj){
+    ValvePosts.find({},{sort:{submitted: +1}}).forEach(function(obj){
       var date = moment.unix(obj.submitted).format("MMM YYYY");
       var sentiment = obj.sentiment;
         for(var i=0;i<monthArr.length;i++)
