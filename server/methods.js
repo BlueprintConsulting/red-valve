@@ -105,7 +105,7 @@ Meteor.methods({
       params = "?after=" + id;
     }
 
-    HTTP.get("https://www.reddit.com/r/valve.json" + params, {}, function(err, response) {
+    HTTP.get("https://www.reddit.com/r/vive.json" + params, {}, function(err, response) {
 
       _.each(response.data.data.children, function(obj) {
         if(obj.data.selftext !== "")
